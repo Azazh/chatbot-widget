@@ -46,13 +46,12 @@
     `;
     document.body.appendChild(container);
 
-    // Function to open the chatbot and pass the current URL
+    // Function to open the chatbot without passing the URL
     function openChatbot() {
-        var currentUrl = encodeURIComponent(window.location.href);  // Encode the current page URL
         var iframe = document.getElementById('chatbot-frame');
         
-        // Set the chatbot iframe source, passing the current URL as a parameter
-        iframe.src = `http://192.168.8.57:8501?webapp_url=${currentUrl}`;  
+        // Set the chatbot iframe source without passing the current URL
+        iframe.src = `http://192.168.8.57:8501`;  
         
         // Display the iframe
         document.getElementById('chatbot-iframe').style.display = 'block';
@@ -63,7 +62,7 @@
         var iframe = document.getElementById('chatbot-iframe');
         
         if (iframe.style.display === 'none') {
-            openChatbot();  // Open and pass the URL
+            openChatbot();  // Open the chatbot
         } else {
             iframe.style.display = 'none';  // Hide the chatbot if already open
         }
