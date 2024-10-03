@@ -50,7 +50,7 @@
     function openChatbot() {
         var currentUrl = encodeURIComponent(window.location.href);  // Encode the URL
         var iframe = document.getElementById('chatbot-frame');
-        iframe.src = `http://10.1.6.81:8501?webapp_url=${currentUrl}`;  // Append the current URL as query parameter
+        iframe.src = `http://192.168.8.57:8501?webapp_url=${currentUrl}`;  // Append the current URL as query parameter
         iframe.style.display = 'block';
     }
 
