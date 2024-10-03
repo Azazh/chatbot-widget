@@ -24,7 +24,7 @@
             border: 1px solid #ccc;
             border-radius: 10px;
             overflow: hidden;
-            display: none;
+            display: none; /* Hide iframe by default */
         }
         #chatbot-iframe iframe {
             width: 100%;
@@ -46,21 +46,26 @@
     `;
     document.body.appendChild(container);
 
-    // Function to get current page URL and update the iframe src
+    // Function to open the chatbot and pass the current URL
     function openChatbot() {
-        var currentUrl = encodeURIComponent(window.location.href);  // Encode the URL
+        var currentUrl = encodeURIComponent(window.location.href);  // Encode the current page URL
         var iframe = document.getElementById('chatbot-frame');
-        iframe.src = `http://192.168.8.57:8501?webapp_url=${currentUrl}`;  // Append the current URL as query parameter
-        iframe.style.display = 'block';
+        
+        // Set the chatbot iframe source, passing the current URL as a parameter
+        iframe.src = `http://192.168.8.57:8501?webapp_url=${currentUrl}`;  
+        
+        // Display the iframe
+        document.getElementById('chatbot-iframe').style.display = 'block';
     }
 
-    // Toggle chatbot visibility and pass web app URL
+    // Button click event to toggle the chatbot
     document.getElementById('chatbot-button').onclick = function() {
         var iframe = document.getElementById('chatbot-iframe');
+        
         if (iframe.style.display === 'none') {
-            openChatbot();
+            openChatbot();  // Open and pass the URL
         } else {
-            iframe.style.display = 'none';
+            iframe.style.display = 'none';  // Hide the chatbot if already open
         }
     };
 })();
