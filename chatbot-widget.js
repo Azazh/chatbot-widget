@@ -91,8 +91,8 @@
         var iframe = document.getElementById('chatbot-frame');
         
         // Set the chatbot iframe source, passing the current URL as a parameter
-      //  iframe.src = `http://192.168.8.57:8501?webapp_url=${currentUrl}`; 
-        iframe.src = ` http://localhos:8501?webapp_url=${currentUrl}`;  
+       iframe.src = ` http://10.1.8.99:8501?webapp_url=${currentUrl}`; 
+        // iframe.src = ` http://localhos:8501?webapp_url=${currentUrl}`;  
 
         
         // Display the iframe
