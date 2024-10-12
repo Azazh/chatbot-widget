@@ -1,5 +1,4 @@
 (function() {
-    // Create and inject CSS styles for the widget
     var style = document.createElement('style');
     style.type = 'text/css';
     style.innerHTML = `
@@ -38,10 +37,10 @@
             overflow: hidden;
             display: none;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-            resize: none;
+            resize: both;
             min-width: 300px;
-            max-width: 90vw;
             min-height: 300px;
+            max-width: 90vw;
             max-height: 90vh;
         }
         #chatbot-iframe iframe {
@@ -49,32 +48,11 @@
             height: 100%;
             border: none;
         }
-        /* Resizable handle on the right */
-        #resizable-handle {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 10px;
-            height: 100%;
-            cursor: ew-resize;
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-        /* Resizable handle on the bottom */
-        #resizable-handle-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 10px;
-            cursor: ns-resize;
-            background-color: rgba(0, 0, 0, 0.1);
-        }
         /* Media query for smaller screens */
         @media (max-width: 768px) {
             #chatbot-iframe {
                 width: 90%;
                 height: 60%;
-                top: auto;
                 bottom: 10px;
                 right: 10px;
                 transform: none;
@@ -92,7 +70,6 @@
                 right: 0px;
                 bottom: 0px;
                 border-radius: 0;
-                transform: none;
             }
             #chatbot-button {
                 width: 40px;
@@ -110,14 +87,11 @@
             &#x1F4AC;
         </div>
         <div id="chatbot-iframe">
-            <div id="resizable-handle"></div>
-            <div id="resizable-handle-bottom"></div>
             <iframe id="chatbot-frame" frameborder="0" title="Chatbot Frame"></iframe>
         </div>
     `;
     document.body.appendChild(container);
 
-    // Function to get current page URL and open the chatbot with it
     function openChatbot() {
         var currentUrl = encodeURIComponent(window.location.href);
         var iframe = document.getElementById('chatbot-frame');
@@ -126,13 +100,11 @@
         document.getElementById('chatbot-button').innerHTML = '&#x2715;';
     }
 
-    // Function to close the chatbot
     function closeChatbot() {
         document.getElementById('chatbot-iframe').style.display = 'none';
         document.getElementById('chatbot-button').innerHTML = '&#x1F4AC;';
     }
 
-    // Button click event to toggle the chatbot
     document.getElementById('chatbot-button').onclick = function() {
         var iframe = document.getElementById('chatbot-iframe');
         if (iframe.style.display === 'none' || iframe.style.display === '') {
@@ -142,62 +114,4 @@
         }
     };
 
-    // Resizing Logic for Horizontal and Vertical Resizing
-    var iframeContainer = document.getElementById('chatbot-iframe');
-    var resizableHandle = document.getElementById('resizable-handle');
-    var resizableHandleBottom = document.getElementById('resizable-handle-bottom');
-    var isResizingX = false;
-    var isResizingY = false;
-    var startX = 0;
-    var startY = 0;
-    var startWidth = 0;
-    var startHeight = 0;
-
-    function handleMouseMoveX(e) {
-        if (isResizingX) {
-            // Increase width when dragging left and decrease when dragging right
-            var newWidth = startWidth + (startX - e.clientX); // Invert the logic
-            if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
-                iframeContainer.style.width = newWidth + 'px';
-            }
-        }
-    }
-
-    function handleMouseMoveY(e) {
-        if (isResizingY) {
-            // Increase height when dragging downward and decrease when dragging upward
-            var newHeight = startHeight + (e.clientY - startY); // Standard logic for downward drag
-            if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
-                iframeContainer.style.height = newHeight + 'px';
-            }
-        }
-    }
-
-    function stopResizing() {
-        isResizingX = false;
-        isResizingY = false;
-        document.removeEventListener('mousemove', handleMouseMoveX);
-        document.removeEventListener('mousemove', handleMouseMoveY);
-        document.removeEventListener('mouseup', stopResizing);
-    }
-
-    // Horizontal Resizing from Right to Left
-    resizableHandle.addEventListener('mousedown', function(e) {
-        isResizingX = true;
-        startX = e.clientX;
-        startWidth = parseInt(document.defaultView.getComputedStyle(iframeContainer).width, 10);
-        document.addEventListener('mousemove', handleMouseMoveX);
-        document.addEventListener('mouseup', stopResizing);
-        e.preventDefault();
-    });
-
-    // Vertical Resizing from Bottom to Top
-    resizableHandleBottom.addEventListener('mousedown', function(e) {
-        isResizingY = true;
-        startY = e.clientY;
-        startHeight = parseInt(document.defaultView.getComputedStyle(iframeContainer).height, 10);
-        document.addEventListener('mousemove', handleMouseMoveY);
-        document.addEventListener('mouseup', stopResizing);
-        e.preventDefault();
-    });
 })();
