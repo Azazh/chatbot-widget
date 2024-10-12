@@ -153,11 +153,35 @@
     var startWidth = 0;
     var startHeight = 0;
 
+    function handleMouseMoveX(e) {
+        var newWidth = startWidth - (e.clientX - startX);
+        if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
+            iframeContainer.style.width = newWidth + 'px';
+        }
+    }
+
+    function handleMouseMoveY(e) {
+        var newHeight = startHeight + (e.clientY - startY);
+        if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
+            iframeContainer.style.height = newHeight + 'px';
+        }
+    }
+
+    function stopResizing() {
+        isResizingX = false;
+        isResizingY = false;
+        document.removeEventListener('mousemove', handleMouseMoveX);
+        document.removeEventListener('mousemove', handleMouseMoveY);
+        document.removeEventListener('mouseup', stopResizing);
+    }
+
     // Horizontal Resizing from Left
     resizableHandle.addEventListener('mousedown', function(e) {
         isResizingX = true;
         startX = e.clientX;
         startWidth = parseInt(document.defaultView.getComputedStyle(iframeContainer).width, 10);
+        document.addEventListener('mousemove', handleMouseMoveX);
+        document.addEventListener('mouseup', stopResizing);
         e.preventDefault();
     });
 
@@ -166,28 +190,8 @@
         isResizingY = true;
         startY = e.clientY;
         startHeight = parseInt(document.defaultView.getComputedStyle(iframeContainer).height, 10);
+        document.addEventListener('mousemove', handleMouseMoveY);
+        document.addEventListener('mouseup', stopResizing);
         e.preventDefault();
-    });
-
-    // Mousemove event to resize the container
-    document.addEventListener('mousemove', function(e) {
-        if (isResizingX) {
-            var newWidth = startWidth - (e.clientX - startX);
-            if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
-                iframeContainer.style.width = newWidth + 'px';
-            }
-        }
-        if (isResizingY) {
-            var newHeight = startHeight + (e.clientY - startY);
-            if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
-                iframeContainer.style.height = newHeight + 'px';
-            }
-        }
-    });
-
-    // Mouseup event to stop resizing
-    document.addEventListener('mouseup', function() {
-        isResizingX = false;
-        isResizingY = false;
     });
 })();
