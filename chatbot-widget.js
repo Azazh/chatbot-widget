@@ -38,9 +38,11 @@
             overflow: hidden;
             display: none; /* Hide iframe by default */
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility */
-            resize: horizontal; /* Make the chatbot resizable */
+            resize: none; /* Disable default resizing */
             min-width: 300px; /* Set a minimum width */
             max-width: 90vw; /* Set a maximum width to prevent overflow */
+            min-height: 300px; /* Set a minimum height */
+            max-height: 90vh; /* Set a maximum height to prevent overflow */
         }
         #chatbot-iframe iframe {
             width: 100%;
@@ -54,7 +56,16 @@
             left: 0;
             width: 10px;
             height: 100%;
-            cursor: ew-resize; /* Change the cursor to indicate resizing */
+            cursor: ew-resize; /* Change the cursor to indicate horizontal resizing */
+        }
+        #chatbot-iframe::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            cursor: ns-resize; /* Change the cursor to indicate vertical resizing */
         }
         /* Media query for smaller screens */
         @media (max-width: 768px) {
@@ -132,28 +143,43 @@
         }
     };
 
-    // Resizing logic
+    // Resizing logic for x and y axis
     var iframeContainer = document.getElementById('chatbot-iframe');
-    var isResizing = false;
+    var isResizingX = false;
+    var isResizingY = false;
     var startX = 0;
+    var startY = 0;
     var startWidth = 0;
+    var startHeight = 0;
 
     iframeContainer.addEventListener('mousedown', function(e) {
-        if (e.offsetX < 10) { // Check if the mouse is near the left border for resizing
-            isResizing = true;
+        if (e.offsetX < 10) { // Check if the mouse is near the left border for horizontal resizing
+            isResizingX = true;
             startX = e.clientX;
             startWidth = parseInt(document.defaultView.getComputedStyle(iframeContainer).width, 10);
+            e.preventDefault();
+        }
+        if (e.offsetY > iframeContainer.offsetHeight - 10) { // Check if the mouse is near the bottom border for vertical resizing
+            isResizingY = true;
+            startY = e.clientY;
+            startHeight = parseInt(document.defaultView.getComputedStyle(iframeContainer).height, 10);
             e.preventDefault();
         }
     });
 
     document.addEventListener('mousemove', function(e) {
-        if (!isResizing) return;
-        var newWidth = startWidth - (e.clientX - startX);
-        iframeContainer.style.width = newWidth + 'px';
+        if (isResizingX) {
+            var newWidth = startWidth - (e.clientX - startX);
+            iframeContainer.style.width = newWidth + 'px';
+        }
+        if (isResizingY) {
+            var newHeight = startHeight + (e.clientY - startY);
+            iframeContainer.style.height = newHeight + 'px';
+        }
     });
 
     document.addEventListener('mouseup', function() {
-        isResizing = false;
+        isResizingX = false;
+        isResizingY = false;
     });
 })();
