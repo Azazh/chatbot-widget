@@ -154,16 +154,20 @@
     var startHeight = 0;
 
     function handleMouseMoveX(e) {
-        var newWidth = startWidth - (e.clientX - startX);
-        if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
-            iframeContainer.style.width = newWidth + 'px';
+        if (isResizingX) {
+            var newWidth = startWidth - (e.clientX - startX);
+            if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
+                iframeContainer.style.width = newWidth + 'px';
+            }
         }
     }
 
     function handleMouseMoveY(e) {
-        var newHeight = startHeight + (e.clientY - startY);
-        if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
-            iframeContainer.style.height = newHeight + 'px';
+        if (isResizingY) {
+            var newHeight = startHeight + (e.clientY - startY);
+            if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
+                iframeContainer.style.height = newHeight + 'px';
+            }
         }
     }
 
