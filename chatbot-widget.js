@@ -143,7 +143,7 @@
         }
     };
 
-    // Resizing logic for x and y axis
+    // Improved Resizing Logic
     var iframeContainer = document.getElementById('chatbot-iframe');
     var isResizingX = false;
     var isResizingY = false;
@@ -170,11 +170,16 @@
     document.addEventListener('mousemove', function(e) {
         if (isResizingX) {
             var newWidth = startWidth - (e.clientX - startX);
-            iframeContainer.style.width = newWidth + 'px';
+            if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
+                iframeContainer.style.width = newWidth + 'px';
+                iframeContainer.style.right = (70 - (startWidth - newWidth)) + 'px'; // Adjust position
+            }
         }
         if (isResizingY) {
             var newHeight = startHeight + (e.clientY - startY);
-            iframeContainer.style.height = newHeight + 'px';
+            if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
+                iframeContainer.style.height = newHeight + 'px';
+            }
         }
     });
 
