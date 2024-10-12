@@ -29,7 +29,7 @@
         #chatbot-iframe {
             position: fixed;
             bottom: 80px;
-            right: 20px;
+            right: 60px; /* Move the chatbot to the left of the button */
             width: 350px;
             height: 500px;
             border: 1px solid #ccc;
@@ -45,6 +45,15 @@
             width: 100%;
             height: 100%;
             border: none;
+        }
+        #chatbot-iframe::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 100%;
+            cursor: ew-resize; /* Change the cursor to indicate resizing */
         }
         /* Media query for smaller screens */
         @media (max-width: 768px) {
@@ -118,4 +127,29 @@
             closeChatbot();  // Close the chatbot if it's open
         }
     };
+
+    // Resizing logic
+    var iframeContainer = document.getElementById('chatbot-iframe');
+    var isResizing = false;
+    var startX = 0;
+    var startWidth = 0;
+
+    iframeContainer.addEventListener('mousedown', function(e) {
+        if (e.offsetX < 10) { // Check if the mouse is near the left border for resizing
+            isResizing = true;
+            startX = e.clientX;
+            startWidth = parseInt(document.defaultView.getComputedStyle(iframeContainer).width, 10);
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('mousemove', function(e) {
+        if (!isResizing) return;
+        var newWidth = startWidth - (e.clientX - startX);
+        iframeContainer.style.width = newWidth + 'px';
+    });
+
+    document.addEventListener('mouseup', function() {
+        isResizing = false;
+    });
 })();
