@@ -169,6 +169,7 @@
         e.preventDefault();
     });
 
+    // Mousemove event to resize the container
     document.addEventListener('mousemove', function(e) {
         if (isResizingX) {
             var newWidth = startWidth - (e.clientX - startX);
@@ -184,6 +185,7 @@
         }
     });
 
+    // Mouseup event to stop resizing
     document.addEventListener('mouseup', function() {
         isResizingX = false;
         isResizingY = false;
