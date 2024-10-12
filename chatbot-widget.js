@@ -5,8 +5,9 @@
     style.innerHTML = `
         #chatbot-container {
             position: fixed;
-            top: 20px;  
-            right: 20px; 
+            top: 50%;
+            right: 0; 
+            transform: translateY(-50%);
             z-index: 1000;
         }
         #chatbot-button {
@@ -36,6 +37,9 @@
             overflow: hidden;
             display: none; /* Hide iframe by default */
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility */
+            resize: horizontal; /* Make the chatbot resizable */
+            min-width: 300px; /* Set a minimum width */
+            max-width: 90vw; /* Set a maximum width to prevent overflow */
         }
         #chatbot-iframe iframe {
             width: 100%;
@@ -95,16 +99,23 @@
         
         // Display the iframe
         document.getElementById('chatbot-iframe').style.display = 'block';
+        document.getElementById('chatbot-button').innerHTML = '&#x2715;'; // Change icon to "close" (X)
+    }
+
+    // Function to close the chatbot
+    function closeChatbot() {
+        document.getElementById('chatbot-iframe').style.display = 'none';
+        document.getElementById('chatbot-button').innerHTML = '&#x1F4AC;'; // Change icon back to chat bubble
     }
 
     // Button click event to toggle the chatbot
     document.getElementById('chatbot-button').onclick = function() {
         var iframe = document.getElementById('chatbot-iframe');
         
-        if (iframe.style.display === 'none') {
+        if (iframe.style.display === 'none' || iframe.style.display === '') {
             openChatbot();  // Open chatbot and pass the current URL
         } else {
-            iframe.style.display = 'none';  // Hide the chatbot if it's open
+            closeChatbot();  // Close the chatbot if it's open
         }
     };
 })();
