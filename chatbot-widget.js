@@ -6,7 +6,7 @@
         #chatbot-container {
             position: fixed;
             top: 50%;
-            right: 0; 
+            right: 20px;
             transform: translateY(-50%);
             z-index: 1000;
         }
@@ -28,8 +28,9 @@
         }
         #chatbot-iframe {
             position: fixed;
-            bottom: 80px;
-            right: 60px; /* Move the chatbot to the left of the button */
+            top: 50%;
+            right: 70px; /* Position the chatbot to the left of the button */
+            transform: translateY(-50%);
             width: 350px;
             height: 500px;
             border: 1px solid #ccc;
@@ -60,8 +61,10 @@
             #chatbot-iframe {
                 width: 90%;  /* Make the iframe 90% of the screen width */
                 height: 60%; /* Make the iframe 60% of the screen height */
+                top: auto;
                 bottom: 10px; /* Adjust bottom position */
-                right: 5px;   /* Adjust right position */
+                right: 10px;   /* Adjust right position */
+                transform: none;
             }
             #chatbot-button {
                 width: 45px;  /* Reduce button size for smaller screens */
@@ -76,6 +79,7 @@
                 right: 0px;
                 bottom: 0px;
                 border-radius: 0; /* Remove border radius */
+                transform: none;
             }
             #chatbot-button {
                 width: 40px;  /* Further reduce button size */
