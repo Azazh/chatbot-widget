@@ -49,11 +49,11 @@
             height: 100%;
             border: none;
         }
-        /* Resizable handle on the left */
+        /* Resizable handle on the right */
         #resizable-handle {
             position: absolute;
             top: 0;
-            left: 0;
+            right: 0;
             width: 10px;
             height: 100%;
             cursor: ew-resize;
@@ -142,7 +142,7 @@
         }
     };
 
-    // Resizing Logic for Smooth Horizontal and Vertical Resizing
+    // Resizing Logic for Horizontal and Vertical Resizing
     var iframeContainer = document.getElementById('chatbot-iframe');
     var resizableHandle = document.getElementById('resizable-handle');
     var resizableHandleBottom = document.getElementById('resizable-handle-bottom');
@@ -155,7 +155,8 @@
 
     function handleMouseMoveX(e) {
         if (isResizingX) {
-            var newWidth = startWidth - (e.clientX - startX);
+            // Increase width when dragging left and decrease when dragging right
+            var newWidth = startWidth + (startX - e.clientX); // Invert the logic
             if (newWidth > 300 && newWidth < window.innerWidth * 0.9) {
                 iframeContainer.style.width = newWidth + 'px';
             }
@@ -164,7 +165,8 @@
 
     function handleMouseMoveY(e) {
         if (isResizingY) {
-            var newHeight = startHeight + (e.clientY - startY);
+            // Increase height when dragging downward and decrease when dragging upward
+            var newHeight = startHeight + (e.clientY - startY); // Standard logic for downward drag
             if (newHeight > 300 && newHeight < window.innerHeight * 0.9) {
                 iframeContainer.style.height = newHeight + 'px';
             }
@@ -179,7 +181,7 @@
         document.removeEventListener('mouseup', stopResizing);
     }
 
-    // Horizontal Resizing from Left
+    // Horizontal Resizing from Right to Left
     resizableHandle.addEventListener('mousedown', function(e) {
         isResizingX = true;
         startX = e.clientX;
@@ -189,7 +191,7 @@
         e.preventDefault();
     });
 
-    // Vertical Resizing from Bottom
+    // Vertical Resizing from Bottom to Top
     resizableHandleBottom.addEventListener('mousedown', function(e) {
         isResizingY = true;
         startY = e.clientY;
